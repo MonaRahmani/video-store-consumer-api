@@ -21,6 +21,20 @@ class VideosController < ApplicationController
       )
   end
 
+  def create
+    video = Video.new(video_params)
+
+    if video.save
+      render json: video.as_json(only: [:title, :overview, :release_date, :inventory]), status: :created
+      return
+    else
+      render json: {
+        errors: video.errors.messages
+      }, status: :bad_request
+      return
+    end
+  end
+
   private
 
   def require_video
@@ -28,5 +42,16 @@ class VideosController < ApplicationController
     unless @video
       render status: :not_found, json: { errors: { title: ["No video with title #{params["title"]}"] } }
     end
+  end
+
+  def video_params
+    return params.permit(
+      :external_id,
+      :title,
+      :overview,
+      :release_date,
+      :inventory,
+      :image_url
+    )
   end
 end
