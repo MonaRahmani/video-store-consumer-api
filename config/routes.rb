@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-
   resources :customers, only: [:index]
 
   resources :videos, only: [:index, :show], param: :title
@@ -10,5 +8,4 @@ Rails.application.routes.draw do
   get "/rentals/overdue", to: "rentals#overdue", as: "overdue"
 
   root 'videos#index'
-
 end
